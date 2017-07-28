@@ -6,6 +6,7 @@ module OmniAuth
   module Strategies
     class Facebook < OmniAuth::Strategies::OAuth2
       DEFAULT_SCOPE = 'email,offline_access'
+      DEFAULT_FIELDS = 'id,name,email,first_name,last_name'.freeze
 
       option :client_options, {
         :site => 'https://graph.facebook.com',
@@ -56,7 +57,7 @@ module OmniAuth
       end
 
       def raw_info
-        @raw_info ||= access_token.get('/me').parsed
+        @raw_info ||= access_token.get("/me?fields=#{DEFAULT_FIELDS}").parsed
       end
 
       def build_access_token
